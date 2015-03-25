@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+    <h2 class="title">
+        DownThemAll Manga Link Creator
+    </h2>
+    
+    
+    <div class="col-md-4">
+        <form role="form">
+            <div class="form-group">
+                <label for="url">Manga Site:</label>
+                <select name="MangaSite" id="MangaSite">
+                    <option value="MangaPanda">Manga Panda</option>
+                    <option value="MangaPark">Manga Park</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="url">Url:</label>
+                <input type="text" class="form-control" id="url">
+            </div>
+            <div class="form-group">
+                <input type="button" class="form-control btn btn-success" id="btnSubmit" value="Download link">
+            </div>
+            <div class="form-group js-mangaPanda">
+                <input type="button" class="form-control btn btn-danger" id="btnNextChapter" value="Next Chapter">
+            </div>
+            <div class="form-group">
+                <input type="button" class="form-control btn btn-primary" id="btnClear" value="Clear">
+            </div>
+        </form>
+    </div>
+    
+    <div class="col-md-8">
+        <form role="form">
+            <div class="form-group js-mangaPark">
+                <label for="pages">Pages:</label>
+                <input type="text" class="form-control" id="pages" style="width:200px">
+                <select class="form-control" id="ddlPages">
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                </select>
+            </div>
+            <div class="form-group js-mangaPanda">
+                <label for="firstImage">Increment:</label>
+                <input type="text" class="form-control" id="increment" style="width:200px">
+            </div>
+            <div class="form-group">
+                <label for="firstImage">First Image Link:</label>
+                <input type="text" class="form-control" id="firstImage">
+            </div>
+            <div class="form-group">
+                <label for="formattedLink">Formatted Image Link:</label>
+                <input type="text" class="form-control" id="formattedLink" onclick="this.setSelectionRange(0, this.value.length)">
+            </div>
+            <div class="form-group">
+                <button class="form-control btn btn-primary" id="btnAddToQueue"><i class="glyphicon glyphicon-arrow-down"></i> Add to queue</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="queue">Queue:</label>
+                <textarea rows="10" class ="form-control" id="queue"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
