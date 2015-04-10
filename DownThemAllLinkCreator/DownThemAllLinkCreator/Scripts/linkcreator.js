@@ -6,6 +6,7 @@
             type: 'POST',
             data: { url: url },
             success: function (response) {
+
                 var result = $(response);
                 var site = $("#MangaSite").val();
 
@@ -14,7 +15,7 @@
                         processMangaPanda(result);
                         break;
                     case "MangaPark":
-                        processMangaPark(result);
+                        processMangaPark(result, response);
                         break;
                 }
             }
@@ -32,14 +33,6 @@ $("#MangaSite").change(function() {
 
 $("#MangaSite").click(function () {
     selectMangaSite();
-});
-
-$("#ddlPages").change(function() {
-    setPage();
-});
-
-$("#ddlPages").click(function () {
-    setPage();
 });
 
 
@@ -65,20 +58,16 @@ $(document).ajaxStart(function () {
 
 
 //private functions
-function setPage() {
-    var page = $("#ddlPages").val();
-    $("#pages").val(page);
-}
 
 function selectMangaSite() {
     var site = $("#MangaSite").val();
 
     switch (site) {
         case "MangaPanda":
+            $(".js-mangaPark").hide();
+
             $(".js-mangaPanda").show();
             $("#increment").val(2);
-
-            $(".js-mangaPark").hide();
             break;
         case "MangaPark":
             $(".js-mangaPanda").hide();
@@ -98,7 +87,7 @@ function processFormattedLink(pages, increment, imageSrc) {
     var extraString = getExtraStringInNumber(fileName);
     var number = getNumber(fileName);
 
-    var lastNumber = parseInt(number) + ((parseInt(pages) * parseInt(increment)));
+    var lastNumber = parseInt(number) + ((parseInt(pages) * parseInt(increment))) - 1;
     var formttedLink = filenameArray.splice(0, lastItemindex).join("/");
 
     $("#formattedLink").val(formttedLink + "/" + extraString + "[" + number + ":" + lastNumber + ":" + increment + "].jpg");
@@ -137,14 +126,22 @@ function getExtraStringInNumber(fileName) {
 
 }
 
-function processMangaPark(result) {
-    var pages = $("#pages").val();
+function processMangaPark(result, response) {
+
+    var pages = 0; 
     var image = $(result).find("a.img-link").children();
     var imageSrc = $(image).attr("src");
     var increment = $(image).attr("i");
+    var title = $(result).find(".loc").html();
 
-    
+    $.each(response.split('\n'), function (index, value) {
+        if (value.indexOf("_page_total") > 0) {
+            pages = value.replace(/^\D+/g, '').replace(";", "");
+            return;
+        }
+    });
 
+    $(".js-MangaTitle").html(title);
     processFormattedLink(pages, increment, imageSrc);
 }
 
@@ -161,17 +158,27 @@ function nextChapter() {
     var site = $("#MangaSite").val();
     var currentUrl = $("#url").val();
     var currentChapter = 0;
+    var splittedUrl = "";
+    var url = "";
 
     switch (site) {
         case "MangaPanda":
-            var splittedUrl = currentUrl.split('/');
+            splittedUrl = currentUrl.split('/');
             currentChapter = splittedUrl[splittedUrl.length - 1];
-            var url = "";
             for (var a = 0; a < splittedUrl.length - 1; a++) {
                 url = url + splittedUrl[a] + "/";
             }
 
             $("#url").val(url + (parseInt(currentChapter) + 1));
+            break;
+        case "MangaPark":
+            splittedUrl = currentUrl.split('/');
+            currentChapter = splittedUrl[splittedUrl.length - 2];
+            var newChapter = parseInt(currentChapter.replace("c", "")) + 1;
+            
+            url = currentUrl.replace(currentChapter, "/c" + newChapter);
+
+            $("#url").val(url);
             break;
     }
 
