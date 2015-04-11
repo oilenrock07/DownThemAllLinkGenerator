@@ -24,7 +24,9 @@ namespace DownThemAllLinkCreator
 
             //downthemall link creator
             bundles.Add(new ScriptBundle("~/bundles/linkcreator").Include(
-            "~/Scripts/linkcreator.js"));
+            "~/Scripts/linkcreator.js",
+            "~/Scripts/errorMessages.js"
+            ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

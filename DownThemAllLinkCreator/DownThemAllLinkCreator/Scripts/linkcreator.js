@@ -1,5 +1,15 @@
 ﻿$("#btnSubmit").click(function () {
     var url = $("#url").val();
+    var site = $("#MangaSite").val();
+
+
+    if (url.indexOf(site.toLowerCase()) <= 0) {
+        $('.js-errorMessage').html(errorMessages.siteUrlDoNotMatch);
+        $("#myModal").modal('show');
+        return;
+    }
+
+
     if (url.trim() != "") {
         $.ajax({
             url: '/Home/GetHTMLString',
@@ -176,7 +186,7 @@ function nextChapter() {
             currentChapter = splittedUrl[splittedUrl.length - 2];
             var newChapter = parseInt(currentChapter.replace("c", "")) + 1;
             
-            url = currentUrl.replace(currentChapter, "/c" + newChapter);
+            url = currentUrl.replace(currentChapter, "c" + newChapter);
 
             $("#url").val(url);
             break;
